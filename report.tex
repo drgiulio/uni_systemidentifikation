@@ -1,0 +1,332 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Short Sectioned Assignment
+% LaTeX Template
+% Version 1.0 (5/5/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Frits Wenneker (http://www.howtotex.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[paper=a4, fontsize=11pt]{scrartcl} % A4 paper and 11pt font size
+
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+%\usepackage{fourier} % Use the Adobe Utopia font for the document - comment this line to return to the LaTeX default
+\usepackage[english]{babel} % English language/hyphenation
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+
+\usepackage{sectsty} % Allows customizing section commands
+\allsectionsfont{\centering \normalfont\scshape} % Make all sections centered, the default font and small caps
+
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
+\fancyhead{} % No page header - if you want one, create it in the same way as the footers below
+\fancyfoot[L]{} % Empty left footer
+\fancyfoot[C]{} % Empty center footer
+\fancyfoot[R]{\thepage} % Page numbering for right footer
+\renewcommand{\headrulewidth}{0pt} % Remove header underlines
+\renewcommand{\footrulewidth}{0pt} % Remove footer underlines
+\setlength{\headheight}{13.6pt} % Customize the height of the header
+
+\numberwithin{equation}{section} % Number equations within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{figure}{section} % Number figures within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{table}{section} % Number tables within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs - comment this line for an assignment with lots of text
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\title{	
+\normalfont \normalsize 
+\textsc{Technical University of Munich, Professorship of Signal Processing} \\ [25pt] % Your university, school and/or department name(s)
+\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+\huge Project 2: Chromatic Dispersion Compensation Using Complex-Valued All-Pass Filters \\ % The assignment title
+\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
+}
+
+\author{Giulio Evangelisti, matric. no. 03659301} % Your name
+
+\date{\normalsize\today} % Today's date or a custom date
+
+\begin{document}
+
+\maketitle % Print the title
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 1
+%----------------------------------------------------------------------------------------
+
+\section{Problem formulation}
+
+We start with the following chromatic dispersion channel model of a single mode optical fiber of length L:
+\begin{equation} 
+H_{CD}(\omega)=\text{exp}\Big(-j\frac{\lambda_{0}^{2}DL}{4\pi c}\omega^2\Big)\label{ft_channel_model}\, ,
+\end{equation}
+
+where $\omega=2\pi f$ is the baseband angular frequency, $\lambda_{0}=c/f_0$ the operating wavelength, $D$ the fiber dispersion parameter and $c$ the speed of light.\\
+Obviously the channel \eqref{ft_channel_model} only influences the phase of the input signal. Therefore, our objective is to compensate the nonlinear phase distortion caused by the physical-optical effect of dispersion by filtering with an infinite impulse response equalization filter. The design is of the equalizer is to follow the algorithm described in the reading material.
+
+%------------------------------------------------
+
+\section{Time-Discretization of the Channel Model}
+
+Since we want to process all signals digitally, we first need to transform from the continuous- to the discrete-time domain through sampling (A/D-conversion). The relationship between the continuous-time angular frequency $\omega$ (i.e. the Fourier Transform, the FT) and the discrete-time angular frequency $\Omega$ (i.e. the Discrete-Time Fourier Transform, the DTFT) is
+\begin{equation} 
+\Omega=\omega T_S\label{freq_norm}\, ,
+\end{equation}
+with the sampling period $T_S=1/F_S$. This frequency normalization \eqref{freq_norm} is the result of the sampling process:
+\begin{equation} 
+t=nT_S\label{time_norm}\, .
+\end{equation}
+With a sampling rate $F_S=B$ and \eqref{freq_norm}, we obtain the discretized channel model as
+\begin{eqnarray} 
+H_{CD}(\Omega)&=&H_{CD}(\omega)\Big|_{\omega=\Omega B}\hspace{0.25cm}=\hspace{0.25cm}\text{exp}\Big(-j\frac{\lambda_{0}^{2}DL}{4\pi c}(\Omega B)^2\Big)\nonumber\\
+&=&\text{exp}(-j\alpha\Omega^2)\label{dtft_channel_model} \, ,
+\end{eqnarray}
+with the normalized angular frequency $\Omega=2\pi f/F_S \in [-\pi,\pi)$ and the channel characterizing constant
+\begin{equation} 
+\alpha=\lambda_{0}^{2}DLB^2/(4\pi c)\label{alpha}\, .
+\end{equation}
+
+%------------------------------------------------
+
+\section{Equalizer Design}
+
+\subsection{Ideal Equalizer}
+
+The ideal equalizer for the channel \eqref{dtft_channel_model} fully compensates the phase distortion such that
+\begin{equation} 
+H_{CD}(\Omega)G_{Ideal}(\Omega)=1\label{ideal_relation}\, .
+\end{equation}
+Plugging in \eqref{dtft_channel_model} and solving for $G_{Ideal}(\Omega)$, we get
+\begin{equation} 
+G_{Ideal}(\Omega)=\text{exp}(j\alpha\Omega^2)\label{ideal_eq}\, .
+\end{equation}
+
+\subsection{IIR Filter}
+
+We realize the ideal equalization filter \eqref{ideal_eq} with an IIR filter:
+\begin{equation} 
+G_{IIR}(z)=\prod_{i=1}^{N_{IIR}}\frac{-\rho_{i}e^{-j\theta_i}+z^{-1}}{1-\rho_{i}e^{j\theta_i}z^{-1}}\label{filter}\, ,
+\end{equation}
+where $\rho_i$ and $\theta_i$ are the radius and angle of the $i^{th}$ pole location in the complex z-domain. Consequently, its zeros are located at $1/\rho_i e^{j\theta_i}$. $N_{IIR}$ represents the number of filter taps.
+
+\subsection{Group Delay}
+
+The group delay of a filter is defined as
+\begin{equation} 
+\tau(\Omega)=-\frac{\partial}{\partial\Omega}\phi(\Omega)\label{gd}\, ,
+\end{equation}
+with the phase response $\phi(\Omega)=\text{arg}\{G(\Omega)\}$. For the ideal filter \eqref{ideal_eq}, we therefore obtain
+\begin{equation} 
+\tau_{Ideal}(\Omega)=-2\alpha\Omega\label{ideal_gd}\, .
+\end{equation}
+To derive the group delay of the IIR filter \eqref{filter}, we consider its frequency response:
+\begin{eqnarray} 
+G_{IIR}(\Omega)&=&G_{IIR}(z)\Big|_{z=e^{j\Omega}}\hspace{0.25cm}=\hspace{0.25cm}\prod_{i=1}^{N_{IIR}}\frac{-\rho_{i}e^{-j\theta_i}+e^{-j\Omega}}{1-\rho_{i}e^{j\theta_i}e^{-j\Omega}}\nonumber\\
+&=&\prod_{i=1}^{N_{IIR}}e^{-j\Omega}\frac{\big(1-\rho_i \text{cos}(\omega-\theta_i)+j\rho_i \text{sin}(\omega-\theta_i)\big)^2}{1+\rho_i^2-2\rho_i\text{cos}(\theta_i-\omega)}\label{freq_resp_iir} \, .
+\end{eqnarray}
+Thus, we can express its phase response as
+\begin{equation} 
+\phi_{IIR}(\Omega)=\sum_{i=1}^{N_{IIR}}\Bigg[-\Omega-2\text{arctan}\Big(\frac{\rho_{i}\text{sin}(\Omega-\theta_i)}{1-\rho_{i}\text{cos}(\Omega-\theta_i)}\Big)\Bigg]\label{phase_resp_iir}\, .
+\end{equation}
+Applying \eqref{gd}, we get the group delay
+\begin{eqnarray} 
+\tau_{IIR}(\Omega)&=&-\frac{\partial}{\partial\Omega}\phi_{IIR}(\Omega)\nonumber\\
+&=&\sum_{i=1}^{N_{IIR}}\Bigg[1+\frac{2}{1+\frac{\rho_{i}^2\text{sin}^2(\Omega-\theta_i)}{(1-\rho_{i}\text{cos}(\Omega-\theta_i))^2}}\frac{\rho_{i}\text{cos}(\Omega-\theta_i)-\rho_i^2(\text{cos}^2(\Omega-\theta_i)+\text{sin}^2(\Omega-\theta_i))}{(1-\rho_{i}\text{cos}(\Omega-\theta_i))^2}\Bigg]\nonumber\\
+&=&\sum_{i=1}^{N_{IIR}}\frac{1-\rho_{i}^2}{1+\rho_{i}^2-2\rho_i\text{cos}(\Omega-\theta_i)}\label{gd_delay_iir} \, .
+\end{eqnarray}
+
+\subsection{Group Delay Extrema}
+
+We now consider \eqref{gd_delay_iir} for a single tap $N_{IIR}=1$:
+\begin{equation} 
+\tau_{IIR_1}(\Omega)=\frac{1-\rho^2}{1+\rho^2-2\rho\text{cos}(\Omega-\theta)}\label{gd_iir_single}\, .
+\end{equation}
+Obviously, \eqref{gd_iir_single} becomes maximum for $\Omega=\theta$:
+\begin{equation} 
+\underset{\Omega}{\operatorname{max}}\{\tau_{IIR_1}(\Omega)\}=\tau_{IIR_1}(\theta)=\frac{1+\rho}{1-\rho}\label{gd_max}\, ,
+\end{equation}
+and minimum for $\Omega=\theta+\pi$:
+\begin{equation} 
+\underset{\Omega}{\operatorname{min}}\{\tau_{IIR_1}(\Omega)\}=\tau_{IIR_1}(\theta+\pi)=\frac{1-\rho}{1+\rho}\label{gd_min}\, .
+\end{equation}
+Since the group delay cannot be negative, \eqref{gd_max} implies $-1\leq\rho<1$ and \eqref{gd_min} $-1<\rho\leq1$. Combined altogether with the knowledge that the radius must be $\rho\geq0$, this leads to
+\begin{equation} 
+0\leq\rho<1\label{rho_constraint}\, ,
+\end{equation}
+which guarantees that the pole $\rho e^{j\theta}$ lies within the unit circle and thus ensures stability.
+
+
+\subsection{Integer Factor}
+
+It has been shown that approximating the ideal negative group delay \eqref{ideal_gd} with \eqref{gd_delay_iir} leads to unstable poles with $\rho_i>1$. Thus, we slightly modify \eqref{ideal_gd} to ensure positivity by adding a integer constant $\beta$:
+\begin{equation} 
+\tau_{Desired}(\Omega)=-2\alpha\Omega+\beta\label{ideal_gd_mod}\, .
+\end{equation}
+We choose $\beta$ such that $\tau'_{Ideal}(\Omega)>0 \quad \forall \Omega \in [-\pi,\pi)$. Obviously, the minimum of \eqref{ideal_gd_mod} occurs at $\Omega=\pi$. In order for this minimum $-2\alpha\pi+\beta$ to be positive, we therefore set
+\begin{equation} 
+\beta=\lceil2\alpha\pi\rceil>2\alpha\pi\label{beta}\, .
+\end{equation}
+
+\subsection{Desired Phase Response}
+
+From \eqref{ideal_gd_mod}, we can derive the desired phase response which our IIR filter should ideally meet:
+\begin{equation} 
+-2\alpha\Omega+\beta=-\frac{\partial}{\partial\Omega}\phi_{Desired}\label{desired_phase_ode}\, .
+\end{equation}
+Applying the separation of variables method to the ODE \eqref{desired_phase_ode}, one obtains
+\begin{eqnarray}
+\int2\alpha\Omega-\beta d\Omega&=&\int d\phi_{Desired}\nonumber\\
+\iff\alpha\Omega^2-\beta\Omega&=&\phi_{Desired}(\Omega)+\phi_0\, , \quad \phi_0 \in \mathbb{R}\nonumber\\
+\iff\phi_{Desired}(\Omega)&=&\alpha\Omega^2-\beta\Omega-\phi_0\label{ode_sep}\, .
+\end{eqnarray}
+
+%------------------------------------------------
+
+\section{Implementation of the Practical Examples}
+
+In the following, as stated in the task formulation, we will consider the following infrared-light scenario:
+\begin{eqnarray}
+B&=&56 \text{GHz}\nonumber\\
+\lambda_0&=&1550 \text{nm}\nonumber\\
+D&=&16 \text{ps/(nm$\times$km)}\label{parameters}\\
+L&=&23 \text{km}\nonumber \, .
+\end{eqnarray}
+
+\subsection{Number of Taps}
+
+According to the reading material, equalization with an FIR filter would require a tap number of
+\begin{equation} 
+N_{FIR}\approx2\Bigg\lfloor\frac{\lambda_0^2}{2c}DB^2L\Bigg\rfloor+1=9\label{nfir}\, .
+\end{equation}
+In contrast to the FIR approach, the IIR filters complexity is considerably smaller:
+\begin{equation} 
+N_{IIR}=\Bigg\lceil\frac{\lambda_0^2}{2c}DB^2L\Bigg\rceil=\lceil2\alpha\pi\rceil\label{niir}=5\, .
+\end{equation}
+
+\subsection{Optimization Framework}
+
+The four-step optimization framework proposed in the reading material has the goal of deriving an optimal IIR all-pass equalization filter \eqref{filter}, i.e. finding the optimal $\rho_i$ and $\theta_i$ as well as the phase correction $\phi_0$ \eqref{ode_sep}, such that ideally
+\begin{equation} 
+H_{CD}(\Omega)G_{IIR}(\Omega)=e^{-j(\phi_0+\beta\Omega)}\label{ideal_real}\, .
+\end{equation}
+Defining the mean square error (MSE) of the transfer function containing the phase information as
+\begin{equation} 
+MSE_{trans. phase}=\int_{-\pi}^{\pi}\Big|H_{CD}(\Omega)G_{IIR}(\Omega)-e^{-j(\phi_0+\beta\Omega)}\Big|^2\label{mse_tp}\, ,
+\end{equation}
+the coefficients of \eqref{filter} are found by solving the following non-convex and non-linear optimization problem:
+\begin{equation} 
+\Psi_{trans. phase}=\underset{s.t. \rho_i<1 \forall i=1,...,N_{IIR}}{\underset{\rho_i,\theta_i,\phi_0}{\operatorname{min}}}\Big\{MSE_{trans. phase}\Big\}\label{opt}\, ,
+\end{equation}
+In order to solve \eqref{opt} without getting stuck in local minima, we introduce another sub-optimization problem with the goal of minimizing the mean square error of the group delay first:
+\begin{equation} 
+\Psi_{GD}=\underset{s.t. \rho_i<1 \forall i=1,...,N_{IIR}}{\underset{\rho_i,\theta_i}{\operatorname{min}}}\Big\{MSE_{GD}\Big\}\label{opt_gd}\, ,
+\end{equation}
+where
+\begin{equation} 
+MSE_{GD}=\int_{-\pi}^{\pi}\Big|\tau_{Desired}(\Omega)-\tau_{IIR}(\Omega)\Big|^2\label{mse_gd}\, ,
+\end{equation}
+and $\tau_{IIR}(\Omega)$ from \eqref{gd_delay_iir}.
+
+\subsubsection{Abel-Smith Algorithm}
+
+First step is the finding of initial estimates $\rho_i$ and $\theta_i$ for the sub-optimization \eqref{opt_gd}. This is done via the Abel-Smith Algorithm as described in the reading material. The segmentation of $\tau_{Desired}(\Omega)$ into $2\pi$-area frequency bands is done by integration:
+\begin{eqnarray}
+\int_{\Omega_j}^{\Omega_{j+1}}\tau_{Desired}(\Omega)d\Omega&=&2\pi\, , \quad \forall j = 0, ... , N_{IIR}\nonumber\\
+\iff\Big[-\alpha\Omega^2+\beta\Omega\Big]_{\Omega_j}^{\Omega_{j+1}}&=&2\pi\nonumber\\
+\iff-\alpha\Omega_{j+1}^2+\beta\Omega_{j+1}+\alpha\Omega_{j}^2-\beta\Omega_{j}&=&2\pi\label{quad_as}\, ,
+\end{eqnarray}
+and solving the resulting quadratic equation with the midnight formula:
+\begin{equation} 
+\Omega_{j+1}=\frac{\beta}{2\alpha}-\sqrt{\frac{\beta^2}{4\alpha^2}-\frac{2\pi}{\alpha}-\frac{\beta}{\alpha}+\Omega_j^2}\label{midnight}\, ,
+\end{equation}
+with $\Omega_{0}=-\pi$ and $\Omega_{N_{IIR}}=\pi$. We choose the "$-$"-sign since $\Omega_{j+1}<\pi$ and $\beta/(2\alpha)\geq\pi$.
+
+\subsubsection{Non-linear Optimizations using Numerical Integration Method: Trapezoidal Rule}
+
+All of the follwoing three non-linear optimizations involve the approximation of mean square error integrals \eqref{mse_gd} and \eqref{mse_tp} via the trapezoidal rule. We split the integration interval from $a=\pi$ to $b=\pi$ into $2^{14}$ equally spaced intervals, resulting in the step width of
+\begin{equation} 
+h=\frac{b-a}{n}\label{sw}\, ,
+\end{equation}
+with $n=2^{14}-1$.\\
+Then, we approximate the integrals according to
+\begin{equation} 
+\int_{a}^{b}f(x)dx=h\Big(\frac{1}{2}f(a)+\frac{1}{2}f(b)+\sum_{k=1}^{n-1}f(a+kh)\Big)\label{num_int}\, .
+\end{equation}
+
+\subsection{Chromatic Dispersion Compensation}
+
+Lastly, we are to put our designed IIR equalization filter into practice for a physical realistic chromatic dispersion channel \eqref{parameters}.
+
+\subsubsection{Frequency Sampling}
+
+We derive the impulse response of the channel model \eqref{dtft_channel_model} in the discrete-time domain by exploiting the relationship between the Discrete Time Fourier Transform (DTFT) and Discrete Fourier Transform (DFT), which is given by sampling the DTFT at $\Omega=2\pi k/N$, $k=0,...,N-1$. The time-domain impulse response can then be obtained by the IDFT of the sampled \eqref{dtft_channel_model}, e.g. for $N=256$:
+\begin{equation} 
+h_{CD}[n]=\frac{1}{\sqrt{N}}\sum_{k=0}^{N-1}e^{-j\alpha4\pi^2k^2/N^2}e^{j2\pi kn/N}\, , \quad n = 0,...,N-1\label{idft_ir}\, .
+\end{equation}
+In comparison, would could also perform the Inverse Fourier Transform of \eqref{ft_channel_model}:
+\begin{equation} 
+h_{CD}(t)=\frac{1}{2\pi}\int_{-\infty}^{\infty}e^{-j\frac{\lambda_0DL}{4\pi c}\Omega^2}e^{j\Omega t}d\Omega\label{IFT}\, ,
+\end{equation}
+which using the Gaussian identity
+\begin{equation} 
+1=\int_{-\infty}^{\infty}\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(\Omega-\mu)^2}{2\sigma^2}}d\Omega\label{IFT}\, ,
+\end{equation}
+for $\sigma^2=2\pi c/(j\lambda_0^2DL)$ and $\mu=2\pi c/(\lambda_0^2DL)$, leads to the time-continuous channel impulse response
+\begin{equation} 
+h_{CD}(t)=\sqrt{\frac{B^2}{j4\pi \alpha}}e^{j\frac{B^2t^2}{4\alpha}}\label{hcdt}\, .
+\end{equation}
+Sampling \eqref{hcdt} with rate $B$ results in:
+\begin{equation} 
+h_{CD}[n]=\sqrt{\frac{B^2}{j4\pi \alpha}}e^{j\frac{n^2}{4\alpha}}\label{hcdn}\, .
+\end{equation}
+
+\subsubsection{Equalization Implementation}
+
+For the equalization, we first filter the received channel output with our derived IIR filter \eqref{filter} with the coefficients representing the solution of \eqref{opt}. Afterwards, keeping \eqref{ideal_real} we still have to correct the phase of the equalization filters output by multiplying with $e^{j\phi_0}$ and then time-shift by $+\beta$ in order to compensate the term $e^{j\beta\Omega}$ since a multiplication with the latter in frequency-domain corresponds to the convolution with the IDFT
+\begin{equation} 
+e^{j\beta\Omega}\xrightarrow  {IDFT}\delta[n+\beta]\label{dirac}
+\end{equation}
+in the time domain.
+However, due to various implementation issues with Matlab functions zp2sos(z,p,k) and zp2tf(z,p,k), it was not possible to simulate the equalization for either \eqref{hcdt} or \eqref{hcdn} with the function filter() as required.
+When passing the impulse response to the equalization filter it should result, ideally, in a dirac as the output of the compensation filter (input = dirac convolved with channel generates impulse response as the channel output). This, at least, is also the case for our implementation. The bit-error-rate simulation causes errors, though.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
