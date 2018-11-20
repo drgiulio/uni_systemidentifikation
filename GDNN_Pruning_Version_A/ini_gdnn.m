@@ -4,9 +4,36 @@
 %%%%%                      (c) 06.10.2013                             %%%%%
 %%%%%          Christian Endisch, TH Ingolstadt, TU München           %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                         %
+%                           Init Duffing System                           %
+%                                                                         %        
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+clear all 
+clc
 
-clear; clc; close all;
+% DUFFING ENABLE
+% sys_switch = 1 -> Duffing System   %IMPORTANT
+% sys_switch = 0 -> 2MS
+sys_switch = 1;
 
+% Simulation settings
+hsim = 0.01;
+tsim = 50;
+
+% Initial states
+x1_init = 1;
+x2_init = 0;
+
+% Duffing system
+gamma = 2.1; % amplitude of forced oscillation
+omega = 1.8; % angular frequency
+delta = 0.4; % damping
+alpha = -1.1; % linear term
+beta = 0.1; % Duffing term
+
+% Noise
+noise_on = 0;
+var = 0.00001;
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -48,8 +75,8 @@ min_ampl = -10;  %-1;
 max_ampl =  10;  % 1;
 
 %Minimaler und maximaler Zeitbereich des APRBS-Signals in Sekunden
-t_min = 0.01;  %T;
-t_max = 0.25;  %25*T;
+t_min = 1*T;
+t_max = 25*T;
 
 
 

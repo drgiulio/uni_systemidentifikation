@@ -8,8 +8,8 @@
 %   christian.endisch@thi.de                                              %
 %   01.05.2016                                                            %
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-
-clear; clc; close all;
+clear all
+clc
 
 %--------------------------------------------------------------------------
 set(0,'DefaultAxesFontSize',15);
