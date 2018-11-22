@@ -140,14 +140,14 @@ tp = tp_input(train_length/T,[t_min,t_max],[min_ampl,max_ampl],T);        %
 
 %Delay Lines zwischen den Layern
 %[DL, ldel] = setDL(toLayer, fromLayer, delayVector, DL, ldel)
-[DL,ldel] = setDL(1,1,[1:3],DL,ldel);
-[DL,ldel] = setDL(1,2,[1:3],DL,ldel);
-[DL,ldel] = setDL(1,3,[1:3],DL,ldel);
+[DL,ldel] = setDL(1,1,[1:3],DL,ldel);       %alle Schichten werden in 
+[DL,ldel] = setDL(1,2,[1:3],DL,ldel);       %Schicht 1 zurückgeführt mit 
+[DL,ldel] = setDL(1,3,[1:3],DL,ldel);       %zeitl. Verzögerung (3)
 [DL,ldel] = setDL(2,1,[0],DL,ldel);         %Normale Forward connection
-[DL,ldel] = setDL(2,2,[1:3],DL,ldel);
-[DL,ldel] = setDL(2,3,[1:3],DL,ldel);
+[DL,ldel] = setDL(2,2,[1:3],DL,ldel);       %Eigenrückkopplung mit Verzögerung (3)
+[DL,ldel] = setDL(2,3,[1:3],DL,ldel);       %Rückkopplung von 3 nach 2 mit zeitl. Vrz. (3)
 [DL,ldel] = setDL(3,2,[0],DL,ldel);         %Normale Forward connection
-[DL,ldel] = setDL(3,3,[1:3],DL,ldel);
+[DL,ldel] = setDL(3,3,[1:3],DL,ldel);       %Eigenrückkopplung mit Verzögerung (3)
 
 %Dimensionen der Eingänge
 R(1) = 1;
