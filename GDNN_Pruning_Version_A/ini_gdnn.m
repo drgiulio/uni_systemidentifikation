@@ -15,6 +15,11 @@ clc
 % sys_switch = 1 -> Duffing System   %IMPORTANT
 % sys_switch = 0 -> 2MS
 sys_switch = 1;
+% switch_input = 1 -> Sine wave  %IMPORTANT
+% switch_input = 0 -> ARPS
+switch_input =1;
+Sine_A = 10;
+
 
 % Simulation settings
 hsim = 0.01;
@@ -25,10 +30,11 @@ x1_init = 1;
 x2_init = 0;
 
 % Duffing system
-gamma = 2.1; % amplitude of forced oscillation
-omega = 1.8; % angular frequency
-delta = 0.4; % damping
-alpha = -1.1; % linear term
+gamma = 0; % amplitude of forced oscillation
+omega = 2*pi*1; % angular frequency
+q = 10; % linear quality factor
+delta = omega/q; % damping
+alpha = 1; % linear term
 beta = 0.1; % Duffing term
 
 % Noise
@@ -75,8 +81,8 @@ min_ampl = -10;  %-1;
 max_ampl =  10;  % 1;
 
 %Minimaler und maximaler Zeitbereich des APRBS-Signals in Sekunden
-t_min = 1*T;
-t_max = 25*T;
+t_min = 100*T;%1*T;
+t_max = 100*T;%25*T;
 
 
 
@@ -147,7 +153,7 @@ tp = tp_input(train_length/T,[t_min,t_max],[min_ampl,max_ampl],T);        %
 R(1) = 1;
 
 %Zahl der Neuronen pro Schicht
-S(1) = 2;
+S(1) = 1;
 S(2) = 2;
 S(3) = 1;
 
