@@ -16,7 +16,7 @@ clc
 % sys_switch = 0 -> 2MS
 sys_switch = 1;
 
-% switch_input = 1 -> Sine excitation %IMPORTANT
+% switch_input = 1 -> Sine excitation or Chirp %IMPORTANT
 % switch_input = 0 -> APRBS excitation
 switch_input =1;
 
