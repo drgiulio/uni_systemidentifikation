@@ -15,9 +15,21 @@ clc
 % sys_switch = 1 -> Duffing System   %IMPORTANT
 % sys_switch = 0 -> 2MS
 sys_switch = 1;
-% switch_input = 1 -> Sine wave  %IMPORTANT
-% switch_input = 0 -> ARPS
+
+% switch_input = 1 -> Sine excitation %IMPORTANT
+% switch_input = 0 -> APRBS excitation
 switch_input =1;
+
+
+% switch_input = 1 -> Chirp wave  %IMPORTANT
+% switch_input = 0 -> Sine
+switch_input_wave = 1;
+%Chirp
+Freq_init = 0.1;
+Freq_max = 5;
+Amplitude_Chirp = 1;
+
+%Sine
 Sine_A = 10;
 
 
@@ -35,7 +47,7 @@ omega = 2*pi*1; % angular frequency
 q = 10; % linear quality factor
 delta = omega/q; % damping
 alpha = 1; % linear term
-beta = 0.1; % Duffing term
+beta = 1; % Duffing term
 
 % Noise
 noise_on = 0;
