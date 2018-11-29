@@ -1,8 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%                      Datei ini.gdnn.m                           %%%%%
-%%%%%             Initialisierung für ein GDNN-Netzwerk               %%%%%
+%%%%%             Initialisierung fï¿½r ein GDNN-Netzwerk               %%%%%
 %%%%%                      (c) 06.10.2013                             %%%%%
-%%%%%          Christian Endisch, TH Ingolstadt, TU München           %%%%%
+%%%%%          Christian Endisch, TH Ingolstadt, TU Mï¿½nchen           %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                         %
 %                           Init Duffing System                           %
@@ -11,6 +11,24 @@
 clear all 
 clc
 
+% Duffing system
+
+% Initial states
+x1_init = 1;
+x2_init = 0;
+
+gamma = 1; % amplitude of forced oscillation
+f = 1; % Eigenfrequency
+omega = 2*pi*f;%1.8; % angular frequency
+q = 10; % Quality factor of oscillation (inversely proportional to damping)
+delta = omega/q; % damping
+alpha = omega^2; % linear term
+beta = 1; % Duffing term
+
+% Noise
+noise_on = 0;
+var = 0.00001;
+
 % DUFFING ENABLE
 % sys_switch = 1 -> Duffing System   %IMPORTANT
 % sys_switch = 0 -> 2MS
@@ -18,50 +36,33 @@ sys_switch = 1;
 
 % switch_input = 1 -> Sine excitation or Chirp %IMPORTANT
 % switch_input = 0 -> APRBS excitation
-switch_input =1;
-
+switch_input = 1;
 
 % switch_input = 1 -> Chirp wave  %IMPORTANT
 % switch_input = 0 -> Sine
 switch_input_wave = 1;
+
 %Chirp
-Freq_init = 0.1;
-Freq_max = 5;
+Freq_init = f/10;
+Freq_max = 5*f;
 Amplitude_Chirp = 1;
 
-%Sine
+% Sine
 Sine_A = 10;
-
 
 % Simulation settings
 hsim = 0.01;
 tsim = 50;
-
-% Initial states
-x1_init = 1;
-x2_init = 0;
-
-% Duffing system
-gamma = 0; % amplitude of forced oscillation
-omega = 2*pi*1; % angular frequency
-q = 10; % linear quality factor
-delta = omega/q; % damping
-alpha = 1; % linear term
-beta = 1; % Duffing term
-
-% Noise
-noise_on = 0;
-var = 0.00001;
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                    Allgemeine Initialisierungen                         %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%Sample Time für Simulation
+%Sample Time fï¿½r Simulation
 T_sim = 0.01;
 
-%Sample Time für neuronales Netz
+%Sample Time fï¿½r neuronales Netz
 T = 0.01;
 
 %Simulationsdauer in Sekunden
@@ -74,7 +75,7 @@ train_length = 5000;
 %                        Parameteroptimierung                             %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%Fenstergröße (in Abtastschritten)
+%Fenstergrï¿½ï¿½e (in Abtastschritten)
 Q = 500;
 
 %Levenberg-Marquardt-Parameter
@@ -103,7 +104,7 @@ t_max = 100*T;%25*T;
 %                           Netzaufbau                                    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%Zahl der Eingänge
+%Zahl der Eingï¿½nge
 numofinputs = 1;
 
 %Zahl der Schichten
@@ -117,7 +118,7 @@ print_weights = 1;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%             ACHTUNG! hier keine Änderungen vornehmen!                   %
+%             ACHTUNG! hier keine ï¿½nderungen vornehmen!                   %
 DI = zeros(numoflayers,numofinputs);                                      %
 DL = zeros(numoflayers);                           %%%%%%%%%%%%%%         %
 idel = zeros(numoflayers,numofinputs,1);            %%        %%          %
@@ -146,22 +147,22 @@ tp = tp_input(train_length/T,[t_min,t_max],[min_ampl,max_ampl],T);        %
 %                           Netzaufbau                                    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%Delay Lines an den Eingängen
+%Delay Lines an den Eingï¿½ngen
 %[DI, idel] = setDI(toLayer, fromLayer, delayVector, DI, idel)
 [DI,idel] = setDI(1,1,[1:3],DI,idel);
 
 %Delay Lines zwischen den Layern
 %[DL, ldel] = setDL(toLayer, fromLayer, delayVector, DL, ldel)
 [DL,ldel] = setDL(1,1,[1:3],DL,ldel);       %alle Schichten werden in 
-[DL,ldel] = setDL(1,2,[1:3],DL,ldel);       %Schicht 1 zurückgeführt mit 
-[DL,ldel] = setDL(1,3,[1:3],DL,ldel);       %zeitl. Verzögerung (3)
+[DL,ldel] = setDL(1,2,[1:3],DL,ldel);       %Schicht 1 zurï¿½ckgefï¿½hrt mit 
+[DL,ldel] = setDL(1,3,[1:3],DL,ldel);       %zeitl. Verzï¿½gerung (3)
 [DL,ldel] = setDL(2,1,[0],DL,ldel);         %Normale Forward connection
-[DL,ldel] = setDL(2,2,[1:3],DL,ldel);       %Eigenrückkopplung mit Verzögerung (3)
-[DL,ldel] = setDL(2,3,[1:3],DL,ldel);       %Rückkopplung von 3 nach 2 mit zeitl. Vrz. (3)
+[DL,ldel] = setDL(2,2,[1:3],DL,ldel);       %Eigenrï¿½ckkopplung mit Verzï¿½gerung (3)
+[DL,ldel] = setDL(2,3,[1:3],DL,ldel);       %Rï¿½ckkopplung von 3 nach 2 mit zeitl. Vrz. (3)
 [DL,ldel] = setDL(3,2,[0],DL,ldel);         %Normale Forward connection
-[DL,ldel] = setDL(3,3,[1:3],DL,ldel);       %Eigenrückkopplung mit Verzögerung (3)
+[DL,ldel] = setDL(3,3,[1:3],DL,ldel);       %Eigenrï¿½ckkopplung mit Verzï¿½gerung (3)
 
-%Dimensionen der Eingänge
+%Dimensionen der Eingï¿½nge
 R(1) = 1;
 
 %Zahl der Neuronen pro Schicht
@@ -201,7 +202,7 @@ prune_maxerr_exact = 1; %nur wirsam bei Pruning 3
 %                        Short Term Memory                                %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%Eingänge
+%Eingï¿½nge
 %[DIS, idels] = setDIS(toLayer, fromLayer, delayVector, DIS, idels)
 [DIS,idels] = setDIS(1,1,[],DIS,idels);
 
@@ -228,7 +229,7 @@ bs(3) = 0;  %0 oder 1
 %                          Block Pruning                                  %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%Eingänge
+%Eingï¿½nge
 %[DIB, idelb] = setDIB(toLayer, fromLayer, delayVector, DIB, idelb)
 [DIB,idelb] = setDIB(1,1,[],DIB,idelb);
 
@@ -263,7 +264,7 @@ bb(3) = 0;  %0 oder 1
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%             ACHTUNG! ab hier keine Änderungen vornehmen!                %
+%             ACHTUNG! ab hier keine ï¿½nderungen vornehmen!                %
 %                                                                         %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                              %    %                                     %
@@ -276,7 +277,7 @@ bb(3) = 0;  %0 oder 1
 %                               %%%%                                      %   
 %                                %%                                       %
 %                                                                         %
-%Maximale Länge der Verzögerungen
+%Maximale Lï¿½nge der Verzï¿½gerungen
 D_max = max(max(max(max(idel))),max(max(max(ldel))));
 
 %Set of input layers
@@ -376,7 +377,7 @@ for i = 1:numoflayers
     end
 end
 
-%Matrizen mit Länge der Delay-Vektoren in Zeilenvektoren umwandeln
+%Matrizen mit Lï¿½nge der Delay-Vektoren in Zeilenvektoren umwandeln
 for i = 1:numoflayers
     if i == 1
         DI_vec = DI(1,:);
@@ -395,7 +396,7 @@ for i = 1:numoflayers
     end
 end
 
-%Matrizen mit den Delay-Vektoren für die Eingänge in Zeilenvektoren umwandeln
+%Matrizen mit den Delay-Vektoren fï¿½r die Eingï¿½nge in Zeilenvektoren umwandeln
 h = 1;
 for i = 1:numoflayers
     for j = 1:numofinputs
@@ -426,7 +427,7 @@ for i = 1:numoflayers
     end
 end
 
-%Matrizen mit den Delay-Vektoren für die Schichten in Zeilenvektoren umwandeln
+%Matrizen mit den Delay-Vektoren fï¿½r die Schichten in Zeilenvektoren umwandeln
 h = 1;
 for i = 1:numoflayers
     for j = 1:numoflayers
@@ -473,7 +474,7 @@ if(~exist('ldelb_vec','var'))
     ldelb_vec = 0;
 end
 
-%Matrizen mit den maximalen Delays für alle Eingänge und Schichten ermitteln
+%Matrizen mit den maximalen Delays fï¿½r alle Eingï¿½nge und Schichten ermitteln
 dimax = zeros(numoflayers,numofinputs);
 dlmax = zeros(numoflayers,numoflayers);
 for i = 1:numoflayers
@@ -488,7 +489,7 @@ end
 dimax = max(dimax);
 dlmax = max(dlmax);
 
-%Größe des Gewichtsvektors
+%Grï¿½ï¿½e des Gewichtsvektors
 L = 0;
 for i = 1:numoflayers
     %Input weights
