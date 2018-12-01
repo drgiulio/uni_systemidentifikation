@@ -25,7 +25,7 @@ train_length = 15;    % [s]
 sim('gdnn_lm_rtrl');
 
 %% System-Eingang und System-Ausgang + Modell Ausgang + Fehler 
-figure(1);
+fig1 = figure(1);
 h1=subplot(311);
 plot(data.time,data.signals.values(:,6),'b','Linewidth',1.0); hold on;
 plot(data.time,data.signals.values(:,3),'r','Linewidth',1.0); grid;
@@ -41,6 +41,26 @@ legend('Fehler e');
 linkaxes([h1 h2 h3],'x'); xlabel('Zeit t[s]'); 
 set([h1 h2],'xticklabel',[]);
 
-figure(2);
+fig2 = figure(2);
 semilogy(data.time,data.signals.values(:,1),'r','Linewidth',1.5); grid;
 legend('Fehler e'); xlabel('Zeit t[s]'); ylabel('Fehler');
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%SPEICHERROUTINE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+if switch_input_wave == 1
+    filename = sprintf('Chrip_Excitation_from_%.2f_Hz_to_%.2f_Hz_with_Amplitude_%.2f_alpha_%.2f_beta_%.2f_delta_%.2f_gamma_%.2f.jpg',...
+        Freq_init, Freq_max, Amplitude_Chirp, alpha, beta, delta, gamma);
+elseif  switch_input_wave == 0
+    filename = sprintf('Sine_Excitation_with_%.2fHz_and_Amplitude_%.2f_alpha_%.2f_beta_%.2f_delta_%.2f_gamma_%.2f.jpg',...
+         omega, Sine_A, alpha, beta, delta, gamma);
+elseif switch_input == 0
+    filename = sprintf('APRBS_Excitation_with_tmin%.2f_to_tmax%0.2f_and_Amin_%.2f_to_Amax_%0.2f_alpha_%.2f_beta_%.2f_delta_%.2f_gamma_%.2f.jpg',...
+         t_min, t_max, min_ampl, max_ampl, alpha, beta, delta, gamma);
+end
+    
+path = [pwd,'\Results'];
+saveas(fig1, fullfile(path, filename));
+

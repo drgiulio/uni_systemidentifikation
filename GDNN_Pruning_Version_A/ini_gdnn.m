@@ -17,7 +17,7 @@ clc
 x1_init = 1;
 x2_init = 0;
 
-gamma = 1; % amplitude of forced oscillation
+gamma = 1;%1; % amplitude of forced oscillation
 f = 1; % Eigenfrequency
 omega = 2*pi*f;%1.8; % angular frequency
 q = 10; % Quality factor of oscillation (inversely proportional to damping)
@@ -42,17 +42,17 @@ switch_input = 1;
 % switch_input = 0 -> Sine
 switch_input_wave = 1;
 
-%Chirp
+%Chirp Signal
 Freq_init = f/10;
-Freq_max = 5*f;
+Freq_max = f/3;
 Amplitude_Chirp = 1;
 
-% Sine
+%Sine Signal 
 Sine_A = 10;
 
 % Simulation settings
 hsim = 0.01;
-tsim = 50;
+%tsim = 50;
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -16,7 +16,7 @@ x2_init = 0;
 %gamma = 0.2;%0.28;%0.29;%0.37;%0.65;%1;%0.5; % amplitude of forced oscillation
 omega_d = 1.2; % angular frequency
 delta = 0.3; % damping
-alpha = -1; % linear term
+alpha = 1; % linear term
 beta = 1; % Duffing term
 
 % Noise
