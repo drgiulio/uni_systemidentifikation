@@ -5,17 +5,17 @@ close all
 %% Init
 
 % Simulation settings
-hsim = 0.001;
-tsim = 200;
+hsim = 0.01;
+train_length = 200;
 
 % Initial states
 x1_init = 1;
 x2_init = 0;
 
 % Duffing system
-%gamma = 0.2;%0.28;%0.29;%0.37;%0.65;%1;%0.5; % amplitude of forced oscillation
-omega_d = 1.2; % angular frequency
-delta = 0.3; % damping
+%gamma = 1;%0.2;%0.28;%0.29;%0.37;%0.65;%1;%0.5; % amplitude of forced oscillation
+omega_d = 1; % angular frequency
+delta = 0.1; % damping
 alpha = 1; % linear term
 beta = 1; % Duffing term
 
@@ -26,18 +26,23 @@ var = 0.00001;
 %% Simulate and plot
 figure;
 
-for gamma = [0.2,0.28,0.29,0.37,0.65,1]%omega_d = [0.5,1,1.2]
+for gamma = 1%[0.2,0.28,0.29,0.37,0.65,1]%omega_d = [0.5,1,1.2]
+   
     
     % Variable parameter
     par = gamma;%omega_d;
-    par_name = '\gamma';%'\omega_d';
+    par_name = '\gamma';
     
     % Run
-    [t, y] = sim('duffing_plant');
+    in = Simulink.SimulationInput('duffing_plant');
+    t = transpose(0:hsim/2:train_length);
+    u = gamma*cos(omega_d*t);
+    in = in.setExternalInput([t,u]);
+    y = sim(in);
 
     % Save
-    x1 = y(:,1);
-    x2 = y(:,2);
+    x1 = y.dpout(:,1);
+    x2 = y.dpout(:,2);
 
     % Phase plot
     subplot(3,1,1)
@@ -50,7 +55,7 @@ for gamma = [0.2,0.28,0.29,0.37,0.65,1]%omega_d = [0.5,1,1.2]
     subplot(3,1,2)
     l = legend('-DynamicLegend','Location','Best');
     set(l,'Interpreter','LaTex','FontSize',12);
-    plot(t, x1, 'DisplayName', ['$', par_name,' = ',num2str(par), '$'])
+    plot(t(1:2:end), x1, 'DisplayName', ['$', par_name,' = ',num2str(par), '$'])
     hold on
     
     % Compute frequency response and plot
@@ -58,7 +63,7 @@ for gamma = [0.2,0.28,0.29,0.37,0.65,1]%omega_d = [0.5,1,1.2]
     func = @(om,y) ( ((om.^2 - alpha)/gamma - 0.75*beta*y.^2).^2 + (delta/gamma*om).^2 ) .* y.^2 - 1/(gamma^2);
     l = legend('-DynamicLegend','Location','Best');
     set(l,'Interpreter','LaTex','FontSize',12);
-    fimplicit(func,'XRange', [0 2], 'YRange', [0 4], 'DisplayName', ['$', par_name,' = ',num2str(par), '$'])%,'MeshDensity',152)
+    fimplicit(func,'XRange', [0 4], 'YRange', [0 6], 'DisplayName', ['$', par_name,' = ',num2str(par), '$'])%,'MeshDensity',152)
     hold on
 end
     

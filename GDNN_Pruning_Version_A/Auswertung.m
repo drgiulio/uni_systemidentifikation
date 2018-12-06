@@ -20,7 +20,7 @@ set(0,'DefaultTextFontSize',15);
 ini_gdnn
 
 % Trainingslänge neue definieren
-train_length = 15;    % [s]
+train_length = 100;    % [s]
 
 sim('gdnn_lm_rtrl');
 
@@ -48,7 +48,7 @@ legend('Fehler e'); xlabel('Zeit t[s]'); ylabel('Fehler');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %SPEICHERROUTINE
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+%{
 
 if switch_input_wave == 1
     filename = sprintf('Chrip_Excitation_from_%.2f_Hz_to_%.2f_Hz_with_Amplitude_%.2f_alpha_%.2f_beta_%.2f_delta_%.2f_gamma_%.2f.jpg',...
@@ -63,4 +63,4 @@ end
     
 path = [pwd,'\Results'];
 saveas(fig1, fullfile(path, filename));
-
+%}

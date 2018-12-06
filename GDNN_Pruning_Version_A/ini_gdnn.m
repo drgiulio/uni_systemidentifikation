@@ -17,12 +17,13 @@ clc
 x1_init = 1;
 x2_init = 0;
 
-gamma = 1;%1; % amplitude of forced oscillation
-f = 1; % Eigenfrequency
-omega = 2*pi*f;%1.8; % angular frequency
-q = 10; % Quality factor of oscillation (inversely proportional to damping)
-delta = omega/q; % damping
-alpha = omega^2; % linear term
+% Duffing system
+gamma = 1;%0.28;%0.29;%0.37;%0.65;%1;%0.5; % amplitude of forced oscillation
+omega_d = 1; % angular frequency
+omega = omega_d;
+f = omega/(2*pi);
+delta = 0.1; % damping
+alpha = 1; % linear term
 beta = 1; % Duffing term
 
 % Noise
@@ -40,15 +41,11 @@ switch_input = 1;
 
 % switch_input = 1 -> Chirp wave  %IMPORTANT
 % switch_input = 0 -> Sine
-switch_input_wave = 1;
+switch_input_wave = 1;%0;
 
 %Chirp Signal
-Freq_init = f/10;
-Freq_max = f/3;
-Amplitude_Chirp = 1;
-
-%Sine Signal 
-Sine_A = 10;
+Freq_init = 4/(2*pi);%0;
+Freq_max = 0;%4/(2*pi);
 
 % Simulation settings
 hsim = 0.01;
@@ -76,7 +73,7 @@ train_length = 5000;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Fenstergr��e (in Abtastschritten)
-Q = 500;
+Q = 50;
 
 %Levenberg-Marquardt-Parameter
 mue = 3;
@@ -166,7 +163,7 @@ tp = tp_input(train_length/T,[t_min,t_max],[min_ampl,max_ampl],T);        %
 R(1) = 1;
 
 %Zahl der Neuronen pro Schicht
-S(1) = 1;
+S(1) = 2;%1;
 S(2) = 2;
 S(3) = 1;
 
