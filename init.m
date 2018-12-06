@@ -6,7 +6,7 @@ close all
 
 % Simulation settings
 hsim = 0.01;
-train_length = 200;
+train_length = 100;
 
 % Initial states
 x1_init = 1;
@@ -36,7 +36,7 @@ for gamma = 1%[0.2,0.28,0.29,0.37,0.65,1]%omega_d = [0.5,1,1.2]
     % Run
     in = Simulink.SimulationInput('duffing_plant');
     t = transpose(0:hsim/2:train_length);
-    u = gamma*cos(omega_d*t);
+    u = gamma*sin(omega_d*t);
     in = in.setExternalInput([t,u]);
     y = sim(in);
 
