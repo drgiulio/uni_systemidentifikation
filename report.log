@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.2.4)  11 DEC 2018 16:38
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.2.4)  11 DEC 2018 18:34
 entering extended mode
 **./report.tex
 (report.tex
@@ -400,8 +400,7 @@ Package: fancyhdr 2017/06/30 v3.9a Extensive control of page headers and footers
 \f@nch@O@erf=\skip75
 \f@nch@O@olf=\skip76
 \f@nch@O@orf=\skip77
-)
-No file report.aux.
+) (report.aux)
 \openout1 = `report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 67.
@@ -417,6 +416,7 @@ LaTeX Font Info:    ... okay on input line 67.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 67.
 LaTeX Font Info:    ... okay on input line 67.
 LaTeX Font Info:    Try loading font information for T1+cmss on input line 70.
+
 ("C:\Program Files\MiKTeX 2.9\tex\latex\base\t1cmss.fd"
 File: t1cmss.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
@@ -428,169 +428,29 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 70.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
+) [1
 
-LaTeX Warning: Reference `ft_channel_model' on page 1 undefined on input line 83.
 
-
-Overfull \hbox (7.40263pt too wide) in paragraph at lines 89--90
-\T1/cmr/m/n/10.95 Since we want to pro-cess all sig-nals dig-i-tally, we first need to trans-form from the continuous-
- []
-
-
-LaTeX Warning: Reference `freq_norm' on page 1 undefined on input line 93.
-
-[1
-
-
-{C:/Users/Maxi/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-
-LaTeX Warning: Reference `freq_norm' on page 2 undefined on input line 97.
-
-
-LaTeX Warning: Reference `dtft_channel_model' on page 2 undefined on input line 113.
-
-
-LaTeX Warning: Reference `dtft_channel_model' on page 2 undefined on input line 117.
-
-
-LaTeX Warning: Reference `ideal_eq' on page 2 undefined on input line 124.
-
-
-LaTeX Warning: Reference `ideal_eq' on page 2 undefined on input line 136.
-
-
-LaTeX Warning: Reference `filter' on page 2 undefined on input line 140.
-
-[2]
-
-LaTeX Warning: Reference `gd' on page 3 undefined on input line 149.
-
-
-Overfull \hbox (15.71117pt too wide) in alignment at lines 150--154
- [][][] []
- []
-
-
-LaTeX Warning: Reference `gd_delay_iir' on page 3 undefined on input line 158.
-
-
-LaTeX Warning: Reference `gd_iir_single' on page 3 undefined on input line 162.
-
-
-LaTeX Warning: Reference `gd_max' on page 3 undefined on input line 170.
-
-
-LaTeX Warning: Reference `gd_min' on page 3 undefined on input line 170.
-
-
-LaTeX Warning: Reference `ideal_gd' on page 3 undefined on input line 179.
-
-
-LaTeX Warning: Reference `gd_delay_iir' on page 3 undefined on input line 179.
-
-
-LaTeX Warning: Reference `ideal_gd' on page 3 undefined on input line 179.
-
-[3]
-
-LaTeX Warning: Reference `ideal_gd_mod' on page 4 undefined on input line 183.
-
-
-LaTeX Warning: Reference `ideal_gd_mod' on page 4 undefined on input line 190.
-
-
-LaTeX Warning: Reference `desired_phase_ode' on page 4 undefined on input line 194.
-
-
-LaTeX Warning: Reference `filter' on page 4 undefined on input line 226.
-
-
-LaTeX Warning: Reference `ode_sep' on page 4 undefined on input line 226.
-
-[4]
-
-LaTeX Warning: Reference `filter' on page 5 undefined on input line 234.
-
-
-LaTeX Warning: Reference `opt' on page 5 undefined on input line 238.
-
-
-LaTeX Warning: Reference `gd_delay_iir' on page 5 undefined on input line 246.
-
-
-LaTeX Warning: Reference `opt_gd' on page 5 undefined on input line 250.
-
-
-LaTeX Warning: Reference `mse_gd' on page 5 undefined on input line 264.
-
-
-LaTeX Warning: Reference `mse_tp' on page 5 undefined on input line 264.
-
-[5]
-
-LaTeX Warning: Reference `parameters' on page 6 undefined on input line 276.
-
-
-LaTeX Warning: Reference `dtft_channel_model' on page 6 undefined on input line 280.
-
-
-LaTeX Warning: Reference `dtft_channel_model' on page 6 undefined on input line 280.
-
-
-LaTeX Warning: Reference `ft_channel_model' on page 6 undefined on input line 284.
-
-
-LaTeX Warning: Reference `hcdt' on page 6 undefined on input line 296.
-
-
-LaTeX Warning: Reference `filter' on page 6 undefined on input line 303.
-
-
-LaTeX Warning: Reference `opt' on page 6 undefined on input line 303.
-
-
-LaTeX Warning: Reference `ideal_real' on page 6 undefined on input line 303.
-
-[6]
-
-LaTeX Warning: Reference `hcdt' on page 7 undefined on input line 308.
-
-
-LaTeX Warning: Reference `hcdn' on page 7 undefined on input line 308.
-
-[7] (report.aux)
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
- ) 
+{C:/Users/Maxi/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}] [2] (report.aux) ) 
 Here is how much of TeX's memory you used:
- 12293 strings out of 493312
- 238916 string characters out of 3138903
- 372258 words of memory out of 3000000
- 15787 multiletter control sequences out of 15000+200000
- 550981 words of font info for 71 fonts, out of 3000000 for 9000
+ 12238 strings out of 493312
+ 238460 string characters out of 3138903
+ 369258 words of memory out of 3000000
+ 15739 multiletter control sequences out of 15000+200000
+ 545043 words of font info for 61 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  41i,11n,51p,10359b,275s stack positions out of 5000i,500n,10000p,200000b,50000s
- <C:\Users\Maxi\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm0800.pk> <C:\Users\Maxi\AppData\Local\
-MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\eccc1200.pk> <C:\Users\Maxi\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknap
-pen\ec\dpi600\ecbx1095.pk> <C:\Users\Maxi\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\eccc1440.pk> <C:\U
-sers\Maxi\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm1095.pk> <C:\Users\Maxi\AppData\Local\MiKTeX\2
-.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm1440.pk> <C:\Users\Maxi\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\d
-pi600\ecrm2074.pk> <C:\Users\Maxi\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\eccc1095.pk><C:/Program Fi
-les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmm
-i10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/p
-ublic/amsfonts/cm/cmmi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKT
-eX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/
-Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfo
-nts/cm/cmsy6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files/MiKTeX 2.9/font
-s/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on report.pdf (7 pages, 223107 bytes).
+ <C:\Users\Maxi\AppData\Local\MiKTe
+X\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\eccc1440.pk> <C:\Users\Maxi\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\e
+c\dpi600\ecrm1095.pk> <C:\Users\Maxi\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm1440.pk> <C:\Users\
+Maxi\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm2074.pk> <C:\Users\Maxi\AppData\Local\MiKTeX\2.9\fo
+nts\pk\ljfour\jknappen\ec\dpi600\eccc1095.pk><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/
+Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfon
+ts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts/
+type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on report.pdf (2 pages, 104454 bytes).
 PDF statistics:
- 342 PDF objects out of 1000 (max. 8388607)
+ 215 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
