@@ -11,6 +11,18 @@
 clear all 
 clc
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                    Allgemeine Initialisierungen                         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Sample Time f�r neuronales Netz
+T = 0.01;
+
+%Simulationsdauer in Sekunden
+train_length = 5000;
+%Sample Time f�r Simulation
+T_sim = 0.01;
+
 % Duffing system
 
 % Initial states
@@ -35,6 +47,16 @@ var = 0.00001;
 % sys_switch = 0 -> 2MS
 sys_switch = 1;
 
+%Chirp Signal
+Freq_init = 0;
+Freq_max = 4/(2*pi);
+
+% Double chirp excitation signal
+is_double_chirp = 1;
+%input_chirps = [chirp(0:T_sim/2:train_length/2,Freq_init,train_length/2,Freq_max), chirp(train_length/2+T_sim/2*T_sim:train_length,Freq_max,train_length,Freq_init)];
+input_chirps = transpose(0:T_sim/2:100);
+input_chirps(:,2) = [chirp(0:T_sim/2:50,Freq_init,50,Freq_max)'; chirp(50+T_sim/2:T_sim/2:100,Freq_max,100,Freq_init)'];
+
 % switch_input = 1 -> Sine excitation or Chirp %IMPORTANT
 % switch_input = 0 -> APRBS excitation
 switch_input = 1;
@@ -43,29 +65,9 @@ switch_input = 1;
 % switch_input = 0 -> Sine
 switch_input_wave = 1;%0;
 
-%Chirp Signal
-Freq_init = 4/(2*pi);%0;
-Freq_max = 0;%4/(2*pi);
-
 % Simulation settings
 hsim = 0.01;
 %tsim = 50;
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                    Allgemeine Initialisierungen                         %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%Sample Time f�r Simulation
-T_sim = 0.01;
-
-%Sample Time f�r neuronales Netz
-T = 0.01;
-
-%Simulationsdauer in Sekunden
-train_length = 5000;
-
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
