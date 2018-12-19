@@ -46,6 +46,11 @@
 
 \setlength\parindent{0pt} % Removes all indentation from paragraphs - comment this line for an assignment with lots of text
 
+%----
+%%Custom packages
+%----
+\usepackage{graphicx}
+
 %----------------------------------------------------------------------------------------
 %	TITLE SECTION
 %----------------------------------------------------------------------------------------
@@ -80,7 +85,7 @@ System beschreiben, Simulationsergebnisse des Duffing Systems zeigen.
 
 \section{Identifikationsmodell}
 
-Als Identifikationsmodell dient das General Dynamic Neuronal Network (GDNN) welches aus drei versteckten Schichten mit zweimal zwei und einmal einem Neuron (2-2-1) besteht. In der Eingangs sowie in der Ausgangsschicht befindet sich ein Neuron und die verschiedenen Schichten sind miteinander über Tapped Delay Lines gekoppelt. Die Tapped Delay Lines sind wiefolgt aufgebaut:
+Als Identifikationsmodell dient das General Dynamic Neuronal Network (GDNN) welches aus drei versteckten Schichten mit zweimal zwei und einmal einem Neuron (2-2-1) besteht. In der Eingangs sowie in der Ausgangsschicht befindet sich ein Neuron und die verschiedenen Schichten sind miteinander über Tapped Delay Lines gekoppelt. Die Tapped Delay Lines sind wie folgt aufgebaut:
 
 \begin{table}
 	\centering
@@ -94,12 +99,20 @@ Als Identifikationsmodell dient das General Dynamic Neuronal Network (GDNN) welc
 \end{table}
 
 Die Identifikation findet mittels eines NARX Modells statt, d.h. der Systemausgang und das Anregungssignal sind die Eingänge für das neuronale Netz. Das GDNN wurde wegen seiner hohen Approximationsfähigkeit ausgewählt. 
+
+Im folgenden wurde die zur Verfügung gestellte Identifikationssoftware GDNN Version A verwendet.
 %------------------------------------------------
 
 \section{Systemanregung}
 
-Anregungssignal beschrieben, Grund für Chirp angeben, Frequenzabhängigkeit des Systems.
-
+%Anregungssignal beschrieben, Grund für Chirp angeben, Frequenzabhängigkeit des Systems.
+Wegen der starken Frequenzabhängigkeit unseres Systems, kann dieses nicht mit einem APRBS-Signal angeregt werden. Dies würde zu Amplitudenschwankungen des Systems führen welche den Lernprozess stören. Aus diesem Grund werden als Anregungssignal zwei Chirp Signale miteinander verbunden. Das erste Chirp Signale hat eine steigende Frequenz $\left[0; \frac{2}{\pi}\right]$ und das zweite eine abfallende Frequenz $\left[\frac{2}{\pi};0\right]$. Somit wird gewährleistet, dass alle Frequenzen bzw. Kreisfrequenzen $\left[0;4\right]$ der Frequenzantwort durchlaufen werden.
+\begin{figure}[!h]
+	\centering
+		\includegraphics[width=1\textwidth]{D:/Dokumente/Dokumente/Studium/Systemidentifikation_Praktikum/uni_systemidentifikation/AnregungChirp.png}
+	\caption{Anregungssignal}
+	\label{fig:AnregungChirp}
+\end{figure}
 
 %------------------------------------------------
 
