@@ -76,18 +76,18 @@
 %----------------------------------------------------------------------------------------
 %	PROBLEM 1
 %----------------------------------------------------------------------------------------
-
+\newpage
 \section{Duffing System}
 
 System beschreiben, Simulationsergebnisse des Duffing Systems zeigen.
 
 %------------------------------------------------
 
-\section{Identifikationsmodell}
+\section{Identifikationsmodell}\label{Identifikationsmodell}
 
 Als Identifikationsmodell dient das General Dynamic Neuronal Network (GDNN) welches aus drei versteckten Schichten mit zweimal zwei und einmal einem Neuron (2-2-1) besteht. In der Eingangs sowie in der Ausgangsschicht befindet sich ein Neuron und die verschiedenen Schichten sind miteinander über Tapped Delay Lines gekoppelt. Die Tapped Delay Lines sind wie folgt aufgebaut:
 
-\begin{table}
+\begin{table}[!h]
 	\centering
 		\begin{tabular}{*{3}{p{4cm}}}
 			Schicht 1 & Schicht 2 & Schicht 3 \\
@@ -109,25 +109,102 @@ Im folgenden wurde die zur Verfügung gestellte Identifikationssoftware GDNN Vers
 Wegen der starken Frequenzabhängigkeit unseres Systems, kann dieses nicht mit einem APRBS-Signal angeregt werden. Dies würde zu Amplitudenschwankungen des Systems führen welche den Lernprozess stören. Aus diesem Grund werden als Anregungssignal zwei Chirp Signale miteinander verbunden. Das erste Chirp Signale hat eine steigende Frequenz $\left[0; \frac{2}{\pi}\right]$ und das zweite eine abfallende Frequenz $\left[\frac{2}{\pi};0\right]$. Somit wird gewährleistet, dass alle Frequenzen bzw. Kreisfrequenzen $\left[0;4\right]$ der Frequenzantwort durchlaufen werden.
 \begin{figure}[!h]
 	\centering
-		\includegraphics[width=1\textwidth]{D:/Dokumente/Dokumente/Studium/Systemidentifikation_Praktikum/uni_systemidentifikation/AnregungChirp.png}
+		\includegraphics[width=0.55\textwidth]{./AnregungChirp.png}
 	\caption{Anregungssignal}
 	\label{fig:AnregungChirp}
 \end{figure}
-
+\newpage
 %------------------------------------------------
 
 \section{Identifikationsergebnisse}
 
-Identifikationsergebnis, Validierung Modell
+%Identifikationsergebnis, Validierung Modell
+Der Lernprozess wird über 100$s$ ausgeführt. Dabei ergeben sich folgende Identifikationsergebnisse:
+Obwohl das System sehr starke Nichtlinearitäten aufweist, erzielen wir gute Identifikationsergebnisse bis zu einem Fehler von $10^{-6}$. Dieses Ergebnis ist zufriedenstellend. Anfangs kommt es zu starken Abweichung, da der Lernprozess nicht weit fortgeschritten ist.
+\begin{figure}[!h]
+	\centering
+		\includegraphics[width=1.00\textwidth]{./Q_500_nice_results_double_chirp.png}
+	\caption{Anregungssignal, Ausgang System, Ausgang Modell}
+	\label{fig:Nice_result_double_chirp}
+\end{figure}
 
+\begin{figure}[!h]
+	\centering
+		\includegraphics[width=0.5\textwidth]{./Q_500_nice_results_double_chirp_2.png}
+	\caption{Verlauf des Fehlers}
+	\label{fig:Nice_result_double_chirp2}
+\end{figure}
+\newpage
 
+Eine erneute Identifikation über 80$s$ mit anschließender Validierung über 20$s$, bei der der Lernprozess abgeschaltet wird, ergab folgende Ergebnisse: 
+\begin{figure}[!h]
+	\centering
+		\includegraphics[width=1.00\textwidth]{./Q_500_nice_results_double_chirp_validierung_80.png}
+	\caption{Anregungssignal, Ausgang System, Ausgang Modell mit Validierung nach 80s}
+	\label{fig:Validierung}
+\end{figure}
+
+\begin{figure}[!h]
+	\centering
+		\includegraphics[width=0.5\textwidth]{./Q_500_nice_results_double_chirp_validierung_80_2.png}
+	\caption{Verlauf des Fehlers mit Validierung nach 80s}
+	\label{fig:Validierung2}
+\end{figure}
+
+Die Ergebnisse zeigen, dass der Fehler nach abschalten des Lernens zwar ansteigt, aber die Identifikation weiterhin gute Resultate liefert.
+\newpage
 %------------------------------------------------
 
 \section{Anpassung des Identifikationsmodells}
 
-Modellstruktur und Anregungssignal ändern. Zu statischen Identifikationsmodell wechseln.
+%Modellstruktur und Anregungssignal ändern. Zu statischen Identifikationsmodell wechseln.
+\subsection{Änderung Modellstruktur}
+Wird die Modellstruktur so abgewandelt, dass keine zeitliche Verzögerungen (TDL) zwischen den Schichten existieren und die Rückführungen bestehen bleiben, so ergeben sich folgende Ergebnisse:
+\begin{figure}[!h]
+	\centering
+		\includegraphics[width=1.00\textwidth]{./GDNN_ohneTDL_Identifikation.png}
+	\caption{Anregungssignal, Ausgang System, Ausgang Modell mit GDNN ohne TDL}
+	\label{fig:GDNN_ohneTDL}
+\end{figure}
 
+\begin{figure}[!h]
+	\centering
+		\includegraphics[width=0.5\textwidth]{./GDNN_ohneTDL_Identifikation_2.png}
+	\caption{Verlauf des Fehlers mit GDNN ohne TDL}
+	\label{fig:GDNN_ohneTDL2}
+\end{figure}
+\newpage
 
+\subsection{Änderung Anregungssignal}
+Eine Änderung des Anregungssignals auf ein klassisches APRBS Signal erzeugt den bereits schon angesprochene schlechten Lernprozess. Die Modellstruktur entspricht wieder der Struktur des zu Anfang angesprochene GDNN-Modells.
+\begin{figure}[!h]
+	\centering
+		\includegraphics[width=1.00\textwidth]{./APRBS_GDNN.png}
+	\caption{Anregungssignal, Ausgang System, Ausgang Modell mit APRBS-Signal}
+	\label{fig:APRBS}
+\end{figure}
 
+\begin{figure}[!h]
+	\centering
+		\includegraphics[width=0.5\textwidth]{./APRBS_GDNN_2.png}
+	\caption{Verlauf des Fehlers mit APRBS-Signal}
+	\label{fig:APRBS2}
+\end{figure}
+\newpage
 
+\subsection{Änderung auf statisches Modell (MLP)}
+Eine Änderung des Modells auf ein statisches Modell welches einem MLP entspricht, liefert ebenfalls einen schlechten Lernprozess. Dies liegt vor allem daran, dass das MLP die starke Nichtlinearität des Duffing Systems nicht identifizieren kann.
+\begin{figure}[!h]
+	\centering
+		\includegraphics[width=1.00\textwidth]{./MLP_Identifikation.png}
+	\caption{Anregungssignal, Ausgang System, Ausgang Modell mit MLP-Modell}
+	\label{fig:MLP}
+\end{figure}
+
+\begin{figure}[!h]
+	\centering
+		\includegraphics[width=0.5\textwidth]{./MLP_Identifikation_2.png}
+	\caption{Verlauf des Fehlers mit MLP-Modell}
+	\label{fig:MLP2}
+\end{figure}
 \end{document}

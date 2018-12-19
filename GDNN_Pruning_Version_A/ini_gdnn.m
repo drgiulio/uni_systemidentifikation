@@ -52,14 +52,14 @@ Freq_init = 0;
 Freq_max = 4/(2*pi);
 
 % Double chirp excitation signal
-is_double_chirp = 1;
+is_double_chirp = 0;
 %input_chirps = [chirp(0:T_sim/2:train_length/2,Freq_init,train_length/2,Freq_max), chirp(train_length/2+T_sim/2*T_sim:train_length,Freq_max,train_length,Freq_init)];
 input_chirps = transpose(0:T_sim/2:100);
 input_chirps(:,2) = [chirp(0:T_sim/2:50,Freq_init,50,Freq_max)'; chirp(50+T_sim/2:T_sim/2:100,Freq_max,100,Freq_init)'];
 
 % switch_input = 1 -> Sine excitation or Chirp %IMPORTANT
 % switch_input = 0 -> APRBS excitation
-switch_input = 1;
+switch_input = 0;
 
 % switch_input = 1 -> Chirp wave  %IMPORTANT
 % switch_input = 0 -> Sine
@@ -75,7 +75,7 @@ hsim = 0.01;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Fenstergrï¿½ï¿½e (in Abtastschritten)
-Q = 50;
+Q = 500;%50;
 
 %Levenberg-Marquardt-Parameter
 mue = 3;
@@ -93,8 +93,8 @@ min_ampl = -10;  %-1;
 max_ampl =  10;  % 1;
 
 %Minimaler und maximaler Zeitbereich des APRBS-Signals in Sekunden
-t_min = 100*T;%1*T;
-t_max = 100*T;%25*T;
+t_min = 1*T;
+t_max = 25*T;
 
 
 
@@ -143,14 +143,16 @@ tp = tp_input(train_length/T,[t_min,t_max],[min_ampl,max_ampl],T);        %
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                           Netzaufbau                                    %
+%                           Netzaufbau _ GDNNN                            %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%Delay Lines an den Eingï¿½ngen
+
+
+% Delay Lines an den Eingï¿½ngen
 %[DI, idel] = setDI(toLayer, fromLayer, delayVector, DI, idel)
 [DI,idel] = setDI(1,1,[1:3],DI,idel);
 
-%Delay Lines zwischen den Layern
+% Delay Lines zwischen den Layern
 %[DL, ldel] = setDL(toLayer, fromLayer, delayVector, DL, ldel)
 [DL,ldel] = setDL(1,1,[1:3],DL,ldel);       %alle Schichten werden in 
 [DL,ldel] = setDL(1,2,[1:3],DL,ldel);       %Schicht 1 zurï¿½ckgefï¿½hrt mit 
@@ -160,6 +162,45 @@ tp = tp_input(train_length/T,[t_min,t_max],[min_ampl,max_ampl],T);        %
 [DL,ldel] = setDL(2,3,[1:3],DL,ldel);       %Rï¿½ckkopplung von 3 nach 2 mit zeitl. Vrz. (3)
 [DL,ldel] = setDL(3,2,[0],DL,ldel);         %Normale Forward connection
 [DL,ldel] = setDL(3,3,[1:3],DL,ldel);       %Eigenrï¿½ckkopplung mit Verzï¿½gerung (3)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                           Netzaufbau _ verändert GDNNN                  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+% % Delay Lines an den Eingï¿½ngen
+% % [DI, idel] = setDI(toLayer, fromLayer, delayVector, DI, idel)
+% [DI,idel] = setDI(1,1,[0],DI,idel);
+% 
+% % Delay Lines zwischen den Layern
+% % [DL, ldel] = setDL(toLayer, fromLayer, delayVector, DL, ldel)
+% [DL,ldel] = setDL(1,1,[0],DL,ldel);       %alle Schichten werden in 
+% [DL,ldel] = setDL(1,2,[0],DL,ldel);       %Schicht 1 zurï¿½ckgefï¿½hrt mit 
+% [DL,ldel] = setDL(1,3,[0],DL,ldel);       %zeitl. Verzï¿½gerung (3)
+% [DL,ldel] = setDL(2,1,[0],DL,ldel);         %Normale Forward connection
+% [DL,ldel] = setDL(2,2,[0],DL,ldel);       %Eigenrï¿½ckkopplung mit Verzï¿½gerung (3)
+% [DL,ldel] = setDL(2,3,[0],DL,ldel);       %Rï¿½ckkopplung von 3 nach 2 mit zeitl. Vrz. (3)
+% [DL,ldel] = setDL(3,2,[0],DL,ldel);         %Normale Forward connection
+% [DL,ldel] = setDL(3,3,[0],DL,ldel);       %Eigenrï¿½ckkopplung mit Verzï¿½gerung (3)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                           Netzaufbau _ MLP                              %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %Delay Lines an den Eingï¿½ngen
+% %[DI, idel] = setDI(toLayer, fromLayer, delayVector, DI, idel)
+% [DI,idel] = setDI(1,1,[0],DI,idel);
+% 
+% %Delay Lines zwischen den Layern
+% %[DL, ldel] = setDL(toLayer, fromLayer, delayVector, DL, ldel)
+% %[DL,ldel] = setDL(1,1,[1:3],DL,ldel);       %alle Schichten werden in 
+% [DL,ldel] = setDL(1,2,[0],DL,ldel);       %Schicht 1 zurï¿½ckgefï¿½hrt mit 
+% %[DL,ldel] = setDL(1,3,[1:3],DL,ldel);       %zeitl. Verzï¿½gerung (3)
+% %[DL,ldel] = setDL(2,1,[0],DL,ldel);         %Normale Forward connection
+% %[DL,ldel] = setDL(2,2,[1:3],DL,ldel);       %Eigenrï¿½ckkopplung mit Verzï¿½gerung (3)
+% [DL,ldel] = setDL(2,3,[0],DL,ldel);       %Rï¿½ckkopplung von 3 nach 2 mit zeitl. Vrz. (3)
+% %[DL,ldel] = setDL(3,2,[0],DL,ldel);         %Normale Forward connection
+% %[DL,ldel] = setDL(3,3,[1:3],DL,ldel);       %Eigenrï¿½ckkopplung mit Verzï¿½gerung (3)
 
 %Dimensionen der Eingï¿½nge
 R(1) = 1;
