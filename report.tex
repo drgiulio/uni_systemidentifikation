@@ -109,7 +109,7 @@ Im folgenden wurde die zur Verfügung gestellte Identifikationssoftware GDNN Vers
 Wegen der starken Frequenzabhängigkeit unseres Systems, kann dieses nicht mit einem APRBS-Signal angeregt werden. Dies würde zu Amplitudenschwankungen des Systems führen welche den Lernprozess stören. Aus diesem Grund werden als Anregungssignal zwei Chirp Signale miteinander verbunden. Das erste Chirp Signale hat eine steigende Frequenz $\left[0; \frac{2}{\pi}\right]$ und das zweite eine abfallende Frequenz $\left[\frac{2}{\pi};0\right]$. Somit wird gewährleistet, dass alle Frequenzen bzw. Kreisfrequenzen $\left[0;4\right]$ der Frequenzantwort durchlaufen werden.
 \begin{figure}[!h]
 	\centering
-		\includegraphics[width=0.55\textwidth]{./AnregungChirp.png}
+		\includegraphics[width=0.9\textwidth]{./AnregungChirp.png}
 	\caption{Anregungssignal}
 	\label{fig:AnregungChirp}
 \end{figure}
@@ -136,7 +136,7 @@ Obwohl das System sehr starke Nichtlinearitäten aufweist, erzielen wir gute Iden
 \end{figure}
 \newpage
 
-Eine erneute Identifikation über 80$s$ mit anschließender Validierung über 20$s$, bei der der Lernprozess abgeschaltet wird, ergab folgende Ergebnisse: 
+Eine erneute Identifikation über 80$s$ mit darauffolgender Validierung über 20$s$, bei der der Lernprozess abgeschaltet wird, ergab folgende Ergebnisse: 
 \begin{figure}[!h]
 	\centering
 		\includegraphics[width=1.00\textwidth]{./Q_500_nice_results_double_chirp_validierung_80.png}
@@ -201,7 +201,7 @@ Eine Änderung des Modells auf ein statisches Modell welches einem MLP entspricht
 	\label{fig:MLP}
 \end{figure}
 
-\begin{figure}[!h]
+\begin{figure}
 	\centering
 		\includegraphics[width=0.5\textwidth]{./MLP_Identifikation_2.png}
 	\caption{Verlauf des Fehlers mit MLP-Modell}
