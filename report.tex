@@ -59,9 +59,9 @@
 
 \title{	
 \normalfont \normalsize 
-\textsc{Technische Universität München, Lehrstuhl für Elektrische Antriebe und Leistungselektronik} \\ [25pt] % Your university, school and/or department name(s)
+\textsc{Technische UniversitÃ¤t MÃ¼nchen, Lehrstuhl fÃ¼r Elektrische Antriebe und Leistungselektronik} \\ [25pt] % Your university, school and/or department name(s)
 \horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
-\huge Projekt: Identifikation eines Duffing Systems mit einem Neuronalen Netz \\ % The assignment title
+\huge Praktikum: Systemidentifikation eines nichtlinearen Schwingungssystems \\ % The assignment title
 \horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
 }
 
@@ -76,16 +76,50 @@
 %----------------------------------------------------------------------------------------
 %	PROBLEM 1
 %----------------------------------------------------------------------------------------
-\newpage
-\section{Duffing System}
+%\newpage
 
-System beschreiben, Simulationsergebnisse des Duffing Systems zeigen.
+\section{Duffing Oszillator}
+
+\subsection{Systembeschreibung}
+
+Unser gewÃ¤hltes System lÃ¤sst sich im inhomogenen, erzwungenem Fall durch folgende nichtlineare Differentialgleichung darstellen \cite{Duffing}:
+\begin{equation}
+\ddot{q}+\delta \dot{q}+\alpha q+\beta q^3=u(t)=\gamma \cos(\omega_d t)\, .
+\end{equation}
+
+Es lÃ¤sst sich daher als Erweiterung des allgemein bekannten gedÃ¤mpften Oszillatormodells um den kubischen RÃ¼ckstellterm $\beta q^3$ interpretieren. Daher entspricht $\delta$ der linearen DÃ¤mpfung, $\alpha=\omega_0^2$ der um die Masse oder MassentrÃ¤gheit normierte lineare Term der rÃ¼cktreibenden Kraft mit der natrÃ¼rlichen Eigenfrequenz $\omega_0=2\pi f_0$, wÃ¤hrend $\gamma$ und $\omega_d$ Amplitude und Frequenz der antreibenden Sinusschwingung darstellen.
+
+\subsection{Praxisbezug}
+
+Die Bedeutung von Schwingungssystemen in der Natur ist unbestreitbar. Eine durchgehend lineare RÃ¼ckstellkraft nach dem Hook'schen Gesetz $F=-kq$ ist allerdings nur idealisiert zutreffend fÃ¼r die meisten Systeme, deren GÃ¼ltigkeit beschrÃ¤nkt ist auf kleine Amplituden. Durch die strukturelle Zusammensetzung des Schwingers nimmt diese rÃ¼cktreibende Kraft entweder (auf nichtlineare Art und Weise) zu oder ab. Dies wird (in 1. Ordnung) durch den nach George Duffing benannten Duffing-Term $\beta q^3$ modelliert.\\
+Beispiele fÃ¼r Schwingungssysteme, die sich sehr gut als Duffing System mathematisch beschreiben lassen, sind sÃ¤mtliche Schwingungssysteme, die nichtlineare Eigenschaften wie eine verÃ¤nderliche Eigenfrequenz, chaotisches Verhalten, Bifurkation, etc. zeigen \cite{Duffing}, wie z.B. konkret ein Pendel mit einer Unwucht oder ein Feder-Masse-System mit einer sog. "hardening spring" ($\beta>0$) \cite{Khalil}.
+
+\subsection{Simulationen}
+
+Mit Simulationen wird das stark nichtlineare Verhalten des Systems untersucht.
+Dessen chaotisches Verhalten lÃ¤sst sich besonders gut veranschaulichen durch Variation der Amplitude $\gamma$ der antreibenden Schwingung (vgl. Fig.~\ref{gammas}). Hier sind im oberen Plot die Phasenportraits mit den ZustÃ¤nden $x_1=q$, $x_2=\dot{q}$, im mittleren die zeitliche Schwingung $x_1(t)=q(t)$, und im untersten Plot der approximierte Frequenzgang des Systems, mit der normierten steady-state Amplitude $z/\gamma$ fÃ¼r die jeweils unterschiedlichen Paramterwerte dargestellt.
+
+\begin{figure}[!h]
+	\centering
+		\includegraphics[width=1\textwidth]{./gammas.eps}
+	\caption{Simulation des Duffing Systems fÃ¼r unterschiedliche Anregungsamplituden. Die restlichen Parameter wurden gewÃ¤hlt als $\delta=0.3$, $\alpha=1$, $\beta=1$, $\omega_d=1.2$ sowie die Anfangsbedinungen zu $x_1(0)=1$ und $x_2(0)=0$.}
+	\label{gammas}
+\end{figure}
+
+Eine Simulation der Strecke mit unseren von nun an verwendeten Parameterwerten ist abgebildet in Fig.~\ref{plant}.
+
+\begin{figure}[!h]
+	\centering
+		\includegraphics[width=1\textwidth]{./plant_sim.eps}
+	\caption{Simulation mit unserem ausgewÃ¤hlten Parametersatz: $\gamma=1$, $\delta=0.1$, $\alpha=1$, $\beta=1$, $\omega_d=1$ sowie $x_1(0)=1$ und $x_2(0)=0$.}
+	\label{plant}
+\end{figure}
 
 %------------------------------------------------
 
 \section{Identifikationsmodell}\label{Identifikationsmodell}
 
-Als Identifikationsmodell dient das General Dynamic Neuronal Network (GDNN) welches aus drei versteckten Schichten mit zweimal zwei und einmal einem Neuron (2-2-1) besteht. In der Eingangs sowie in der Ausgangsschicht befindet sich ein Neuron und die verschiedenen Schichten sind miteinander über Tapped Delay Lines gekoppelt. Die Tapped Delay Lines sind wie folgt aufgebaut:
+Als Identifikationsmodell dient das General Dynamic Neuronal Network (GDNN) welches aus drei versteckten Schichten mit zweimal zwei und einmal einem Neuron (2-2-1) besteht. In der Eingangs sowie in der Ausgangsschicht befindet sich ein Neuron und die verschiedenen Schichten sind miteinander Ã¼ber Tapped Delay Lines gekoppelt. Die Tapped Delay Lines sind wie folgt aufgebaut:
 
 \begin{table}[!h]
 	\centering
@@ -98,15 +132,15 @@ Als Identifikationsmodell dient das General Dynamic Neuronal Network (GDNN) welc
 		\end{tabular}
 \end{table}
 
-Die Identifikation findet mittels eines NARX Modells statt, d.h. der Systemausgang und das Anregungssignal sind die Eingänge für das neuronale Netz. Das GDNN wurde wegen seiner hohen Approximationsfähigkeit ausgewählt. 
+Die Identifikation findet mittels eines NARX Modells statt, d.h. der Systemausgang und das Anregungssignal sind die EingÃ¤nge fÃ¼r das neuronale Netz. Das GDNN wurde wegen seiner hohen ApproximationsfÃ¤higkeit ausgewÃ¤hlt. 
 
-Im folgenden wurde die zur Verfügung gestellte Identifikationssoftware GDNN Version A verwendet.
+Im folgenden wurde die zur VerfÃ¼gung gestellte Identifikationssoftware GDNN Version A verwendet.
 %------------------------------------------------
 
 \section{Systemanregung}
 
-%Anregungssignal beschrieben, Grund für Chirp angeben, Frequenzabhängigkeit des Systems.
-Wegen der starken Frequenzabhängigkeit unseres Systems, kann dieses nicht mit einem APRBS-Signal angeregt werden. Dies würde zu Amplitudenschwankungen des Systems führen welche den Lernprozess stören. Aus diesem Grund werden als Anregungssignal zwei Chirp Signale miteinander verbunden. Das erste Chirp Signale hat eine steigende Frequenz $\left[0; \frac{2}{\pi}\right]$ und das zweite eine abfallende Frequenz $\left[\frac{2}{\pi};0\right]$. Somit wird gewährleistet, dass alle Frequenzen bzw. Kreisfrequenzen $\left[0;4\right]$ der Frequenzantwort durchlaufen werden.
+%Anregungssignal beschrieben, Grund fÃ¼r Chirp angeben, FrequenzabhÃ¤ngigkeit des Systems.
+Wegen der starken FrequenzabhÃ¤ngigkeit unseres Systems, kann dieses nicht mit einem APRBS-Signal angeregt werden. Dies wÃ¼rde zu Amplitudenschwankungen des Systems fÃ¼hren welche den Lernprozess stÃ¶ren. Aus diesem Grund werden als Anregungssignal zwei Chirp Signale miteinander verbunden. Das erste Chirp Signale hat eine steigende Frequenz $\left[0; \frac{2}{\pi}\right]$ und das zweite eine abfallende Frequenz $\left[\frac{2}{\pi};0\right]$. Somit wird gewÃ¤hrleistet, dass alle Frequenzen bzw. Kreisfrequenzen $\left[0;4\right]$ der Frequenzantwort durchlaufen werden.
 \begin{figure}[!h]
 	\centering
 		\includegraphics[width=0.9\textwidth]{./AnregungChirp.png}
@@ -119,8 +153,8 @@ Wegen der starken Frequenzabhängigkeit unseres Systems, kann dieses nicht mit ei
 \section{Identifikationsergebnisse}
 
 %Identifikationsergebnis, Validierung Modell
-Der Lernprozess wird über 100$s$ ausgeführt. Dabei ergeben sich folgende Identifikationsergebnisse:
-Obwohl das System sehr starke Nichtlinearitäten aufweist, erzielen wir gute Identifikationsergebnisse bis zu einem Fehler von $10^{-6}$. Dieses Ergebnis ist zufriedenstellend. Anfangs kommt es zu starken Abweichung, da der Lernprozess nicht weit fortgeschritten ist.
+Der Lernprozess wird Ã¼ber 100$s$ ausgefÃ¼hrt. Dabei ergeben sich folgende Identifikationsergebnisse:
+Obwohl das System sehr starke NichtlinearitÃ¤ten aufweist, erzielen wir gute Identifikationsergebnisse bis zu einem Fehler von $10^{-6}$. Dieses Ergebnis ist zufriedenstellend. Anfangs kommt es zu starken Abweichung, da der Lernprozess nicht weit fortgeschritten ist.
 \begin{figure}[!h]
 	\centering
 		\includegraphics[width=1.00\textwidth]{./Q_500_nice_results_double_chirp.png}
@@ -136,7 +170,7 @@ Obwohl das System sehr starke Nichtlinearitäten aufweist, erzielen wir gute Iden
 \end{figure}
 \newpage
 
-Eine erneute Identifikation über 80$s$ mit darauffolgender Validierung über 20$s$, bei der der Lernprozess abgeschaltet wird, ergab folgende Ergebnisse: 
+Eine erneute Identifikation Ã¼ber 80$s$ mit darauffolgender Validierung Ã¼ber 20$s$, bei der der Lernprozess abgeschaltet wird, ergab folgende Ergebnisse: 
 \begin{figure}[!h]
 	\centering
 		\includegraphics[width=1.00\textwidth]{./Q_500_nice_results_double_chirp_validierung_80.png}
@@ -157,9 +191,9 @@ Die Ergebnisse zeigen, dass der Fehler nach abschalten des Lernens zwar ansteigt
 
 \section{Anpassung des Identifikationsmodells}
 
-%Modellstruktur und Anregungssignal ändern. Zu statischen Identifikationsmodell wechseln.
-\subsection{Änderung Modellstruktur}
-Wird die Modellstruktur so abgewandelt, dass keine zeitliche Verzögerungen (TDL) zwischen den Schichten existieren und die Rückführungen bestehen bleiben, so ergeben sich folgende Ergebnisse:
+%Modellstruktur und Anregungssignal Ã¤ndern. Zu statischen Identifikationsmodell wechseln.
+\subsection{Ã„nderung Modellstruktur}
+Wird die Modellstruktur so abgewandelt, dass keine zeitliche VerzÃ¶gerungen (TDL) zwischen den Schichten existieren und die RÃ¼ckfÃ¼hrungen bestehen bleiben, so ergeben sich folgende Ergebnisse:
 \begin{figure}[!h]
 	\centering
 		\includegraphics[width=1.00\textwidth]{./GDNN_ohneTDL_Identifikation.png}
@@ -175,8 +209,8 @@ Wird die Modellstruktur so abgewandelt, dass keine zeitliche Verzögerungen (TDL)
 \end{figure}
 \newpage
 
-\subsection{Änderung Anregungssignal}
-Eine Änderung des Anregungssignals auf ein klassisches APRBS Signal erzeugt den bereits schon angesprochene schlechten Lernprozess. Die Modellstruktur entspricht wieder der Struktur des zu Anfang angesprochene GDNN-Modells.
+\subsection{Ã„nderung Anregungssignal}
+Eine Ã„nderung des Anregungssignals auf ein klassisches APRBS Signal erzeugt den bereits schon angesprochene schlechten Lernprozess. Die Modellstruktur entspricht wieder der Struktur des zu Anfang angesprochene GDNN-Modells.
 \begin{figure}[!h]
 	\centering
 		\includegraphics[width=1.00\textwidth]{./APRBS_GDNN.png}
@@ -192,8 +226,8 @@ Eine Änderung des Anregungssignals auf ein klassisches APRBS Signal erzeugt den 
 \end{figure}
 \newpage
 
-\subsection{Änderung auf statisches Modell (MLP)}
-Eine Änderung des Modells auf ein statisches Modell welches einem MLP entspricht, liefert ebenfalls einen schlechten Lernprozess. Dies liegt vor allem daran, dass das MLP die starke Nichtlinearität des Duffing Systems nicht identifizieren kann.
+\subsection{Ã„nderung auf statisches Modell (MLP)}
+Eine Ã„nderung des Modells auf ein statisches Modell welches einem MLP entspricht, liefert ebenfalls einen schlechten Lernprozess. Dies liegt vor allem daran, dass das MLP die starke NichtlinearitÃ¤t des Duffing Systems nicht identifizieren kann.
 \begin{figure}[!h]
 	\centering
 		\includegraphics[width=1.00\textwidth]{./MLP_Identifikation.png}
@@ -207,4 +241,8 @@ Eine Änderung des Modells auf ein statisches Modell welches einem MLP entspricht
 	\caption{Verlauf des Fehlers mit MLP-Modell}
 	\label{fig:MLP2}
 \end{figure}
+
+\bibliography{ref}
+\bibliographystyle{plainurl}
+
 \end{document}
